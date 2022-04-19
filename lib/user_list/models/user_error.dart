@@ -1,5 +1,5 @@
 class UserError {
   int code;
-  Object massage;
+  String massage;
   UserError({required this.code, required this.massage});
 }

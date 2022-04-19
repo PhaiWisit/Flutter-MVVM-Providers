@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mvvm_provider/components/app_error.dart';
 import 'package:flutter_mvvm_provider/components/app_title.dart';
 import 'package:flutter_mvvm_provider/components/user_list_row.dart';
 import 'package:flutter_mvvm_provider/user_list/view_models/users_view_model.dart';
@@ -15,37 +16,53 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     UsersViewModel usersViewModel = context.watch<UsersViewModel>();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Users',
+        ),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                openAddUser(context);
+              },
+              icon: Icon(Icons.add))
+        ],
+      ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
-          children: [_ui(usersViewModel)],
+          children: [_ui(context, usersViewModel)],
         ),
       ),
     );
   }
 
-  _ui(UsersViewModel usersViewModel) {
+  _ui(BuildContext context, UsersViewModel usersViewModel) {
     if (usersViewModel.loading) {
       return Apploading();
     } else if (usersViewModel.userError.code != 0) {
-      return Container(
-        child: Text('error'),
+      return AppError(
+        errortext: usersViewModel.userError.massage,
       );
     } else {
-      print('ui length = ' + usersViewModel.userListModel.length.toString());
       return Expanded(
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              UserModel userModel = usersViewModel.userListModel[index];
-              return UserListRow(
-                  userModel: userModel,
-                  onTap: () async {
-                    openUserDetials(context);
-                  });
-            },
-            separatorBuilder: (context, index) => Divider(),
-            itemCount: usersViewModel.userListModel.length),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            usersViewModel = context.watch<UsersViewModel>();
+          },
+          child: ListView.separated(
+              itemBuilder: (context, index) {
+                UserModel userModel = usersViewModel.userListModel[index];
+                return UserListRow(
+                    userModel: userModel,
+                    onTap: () async {
+                      usersViewModel.setSelectedUser(userModel);
+                      openUserDetials(context);
+                    });
+              },
+              separatorBuilder: (context, index) => Divider(),
+              itemCount: usersViewModel.userListModel.length),
+        ),
       );
     }
   }

@@ -8,24 +8,24 @@ String usersListModelToJson(List<UserModel> data) =>
 
 class UserModel {
   UserModel({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.email,
-    required this.address,
-    required this.phone,
-    required this.website,
-    required this.company,
+    this.id,
+    this.name,
+    this.username,
+    this.email,
+    this.address,
+    this.phone,
+    this.website,
+    this.company,
   });
 
-  int id;
-  String name;
-  String username;
-  String email;
-  Address address;
-  String phone;
-  String website;
-  Company company;
+  int? id;
+  String? name;
+  String? username;
+  String? email;
+  Address? address;
+  String? phone;
+  String? website;
+  Company? company;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
@@ -43,10 +43,10 @@ class UserModel {
         "name": name,
         "username": username,
         "email": email,
-        "address": address.toJson(),
+        "address": address?.toJson(),
         "phone": phone,
         "website": website,
-        "company": company.toJson(),
+        "company": company?.toJson(),
       };
 }
 

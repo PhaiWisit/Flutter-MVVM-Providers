@@ -23,7 +23,7 @@ class UserListRow extends StatelessWidget {
             AppTitle(
               text: userModel.name,
             ),
-            Text(userModel.email),
+            Text(userModel.email!),
           ],
         ),
       ),
