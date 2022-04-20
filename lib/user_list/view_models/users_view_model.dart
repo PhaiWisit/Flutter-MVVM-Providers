@@ -10,12 +10,14 @@ class UsersViewModel extends ChangeNotifier {
   UserError _userError = UserError(code: 0, massage: 'massage');
   UserModel? _selectedUser;
   UserModel? _addingUser = UserModel();
+  String? _imageNetwork;
 
   bool get loading => _loading;
   List<UserModel> get userListModel => _userListModel;
   UserError get userError => _userError;
   UserModel get selectedUser => _selectedUser!;
   UserModel? get addingUser => _addingUser;
+  String? get imageNetwork => _imageNetwork;
 
   UsersViewModel() {
     getUsers();
@@ -34,8 +36,9 @@ class UsersViewModel extends ChangeNotifier {
     _userError = userError;
   }
 
-  setSelectedUser(UserModel userModel) {
+  setSelectedUser(UserModel userModel, String imageNetwork) {
     _selectedUser = userModel;
+    _imageNetwork = imageNetwork;
   }
 
   addUser() async {
@@ -66,6 +69,7 @@ class UsersViewModel extends ChangeNotifier {
       int code = response.code;
 
       setUserListModel(response.response as List<UserModel>);
+      print('GET SUCCESS!');
     }
     if (response is Failure) {
       UserError userError = UserError(

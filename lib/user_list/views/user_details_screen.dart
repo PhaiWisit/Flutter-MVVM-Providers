@@ -13,15 +13,34 @@ class UserDetialsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppTitle(
-              text: usersViewModel.selectedUser.name,
+            Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.amber,
+                  image: DecorationImage(
+                      image: NetworkImage(usersViewModel.imageNetwork!))),
+              width: 50,
+              height: 50,
+              // color: Colors.amber,
             ),
-            Text(usersViewModel.selectedUser.email!),
+            SizedBox(
+              width: 20,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppTitle(
+                  text: usersViewModel.selectedUser.name,
+                ),
+                Text(usersViewModel.selectedUser.email!),
+              ],
+            ),
           ],
         ),
       ),
